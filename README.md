@@ -6,8 +6,8 @@
 
 ```bash
 $ cd demo
-$ gcc ./problem.cpp -o ./problem
-$ gcc ./grader.cpp -o ./grader
+$ g++ ./problem.cpp -o ./problem
+$ g++ ./grader.cpp -o ./grader
 $ python ../interactive.py ./problem ./grader
 AC
 
