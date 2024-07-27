@@ -6,7 +6,10 @@
 
 ```bash
 $ cd demo
-$ python interactive.py ./problem ./grader
+$ gcc ./problem.cpp -o ./problem
+$ gcc ./grader.cpp -o ./grader
+$ python ../interactive.py ./problem ./grader
 AC
 
+$ 
 ```
