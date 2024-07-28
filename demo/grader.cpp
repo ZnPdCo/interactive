@@ -18,9 +18,11 @@ int main() {
     char x[5];
     int y;
     scanf("%s%d", x, &y);
+    fprintf(stderr, "%s %d\n", x, y);
     if (x[0] == '?') {
       printf("%d\n", a >= y);
       fflush(stdout);
+      fprintf(stderr, "%d\n", a >= y);
     } else {
       assert(x[0] == '!');
       if (y == a) {
