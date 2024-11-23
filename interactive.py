@@ -1,6 +1,8 @@
 import sys
 import subprocess
-from threading import Thread
+from threading import Thread, Lock
+
+stop = False
 
 def judger(argv):
     if len(argv) != 3:
@@ -10,19 +12,26 @@ def judger(argv):
     command1 = argv[1]
     command2 = argv[2]
 
-    def run_command(p1, p2):
+    def run_command(name, p1, p2):
+        global stop
         while True:
-            line = p2.stdout.readline()
-            if not line:
+            lock = Lock()
+            lock.acquire()
+            line = p1.stdout.readline()
+            if not line or stop:
+                stop = True
+                lock.release()
                 break
-            p1.stdin.write(line)
-            p1.stdin.flush()
+            print(name + ": " + line.decode(), end="")
+            p2.stdin.write(line)
+            p2.stdin.flush()
+            lock.release()
 
     p1 = subprocess.Popen(command1, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     p2 = subprocess.Popen(command2, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
-    t1 = Thread(target=run_command, args=(p1, p2))
-    t2 = Thread(target=run_command, args=(p2, p1))
+    t1 = Thread(target=run_command, args=(command1, p1, p2))
+    t2 = Thread(target=run_command, args=(command2, p2, p1))
 
     t1.start()
     t2.start()
