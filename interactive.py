@@ -27,8 +27,8 @@ def judger(argv):
             p2.stdin.flush()
             lock.release()
 
-    p1 = subprocess.Popen(command1, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    p2 = subprocess.Popen(command2, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(command1, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+    p2 = subprocess.Popen(command2, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
 
     t1 = Thread(target=run_command, args=(command1, p1, p2))
     t2 = Thread(target=run_command, args=(command2, p2, p1))
